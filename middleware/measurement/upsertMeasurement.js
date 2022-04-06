@@ -4,6 +4,8 @@
 //Redirects / after success
 module.exports = function (objectrepository) {
     return function (req, res, next) {
+        console.log("Requested ID:" + req.params.measurementid);
+        console.log("Posted:" + req.body);
         next();
     };
 };

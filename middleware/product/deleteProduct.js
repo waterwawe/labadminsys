@@ -2,6 +2,7 @@
 //Redirects to / after removal
 module.exports = function (objectrepository) {
     return function (req, res, next) {
+        console.log("Requested ID:" + req.params.productid);
         next();
     };
 };
