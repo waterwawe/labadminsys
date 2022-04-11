@@ -3,6 +3,14 @@
 module.exports = function (objectrepository) {
     return function (req, res, next) {
         console.log("Requested ID:" + req.params.productid);
-        next();
+        if(typeof res.locals.product === "undefined"){
+            return next();
+        }
+        res.locals.product.remove((err) => {
+            if(err){
+                return next(err);
+            }
+        })
+        return res.redirect("/products");
     };
 };

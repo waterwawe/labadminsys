@@ -10,10 +10,15 @@ const renderMw = require('../middleware/render');
 const upsertMeasurement = require('../middleware/measurement/upsertMeasurement');
 const getAllProducts = require('../middleware/product/getAllProducts');
 const getProductById = require('../middleware/product/getProductById');
-const req = require('express/lib/request');
+
+const MeasurementModel = require('../models/measurement')
+const ProductModel = require('../models/product')
 
 module.exports = function (app) {
-    const objRepo = {};
+    const objRepo = {
+        MeasurementModel: MeasurementModel,
+        ProductModel: ProductModel,
+    };
 
     app.get('/',
         getAllProducts(objRepo),
@@ -49,13 +54,12 @@ module.exports = function (app) {
         renderMw(objRepo, 'products'));
 
     app.get('/product/add',
-        upsertProductMw(objRepo),
         getProductByIdMw(objRepo),
         renderMw(objRepo, 'addProduct'));
 
     app.post('/product/add',
-        upsertProductMw(objRepo),
         getProductByIdMw(objRepo),
+        upsertProductMw(objRepo),
         renderMw(objRepo, 'addProduct'));
 
     app.get('/product/:productid',
@@ -63,8 +67,8 @@ module.exports = function (app) {
         renderMw(objRepo, 'editProduct'));
 
     app.post('/product/:productid',
-        upsertProductMw(objRepo),
         getProductByIdMw(objRepo),
+        upsertProductMw(objRepo),
         renderMw(objRepo, 'editProduct'));
 
     app.get('/product/:productid/delete',

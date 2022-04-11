@@ -1,15 +1,19 @@
 //Loads a product from the database which's id matches the :productId param
 //The result is saved to res.locals.product
+const requireOption = require("../requireOption");
+
 module.exports = function (objectrepository) {
+    const ProductModel = requireOption(objectrepository,"ProductModel");
+
     return function (req, res, next) {
         console.log("Requested ID:" + req.params.productid);
-        res.locals.product =
-            {
-                id: 1,
-                name: "Öblítő",
-                minValidResult: 0.001,
-                maxValidResult: 0.005,
+        ProductModel.findOne({_id:req.params.productid}, (err, product) => {
+            if (err || ! product) {
+                return next(err);
             }
-        next();
+
+            res.locals.product = product;
+            return next();
+        });
     };
 };
