@@ -5,7 +5,7 @@ const Measurement = db.model('Measurement', {
     time: Date,
     sample: Number,
     result: Number,
-    Operator: String,
+    operator: String,
     _measuredProduct: {
         type: Schema.Types.ObjectId,
         ref: 'Product'

@@ -7,7 +7,6 @@ module.exports = function (objectrepository) {
     const ProductModel = requireOption(objectrepository, "ProductModel");
 
     return function (req, res, next) {
-        console.log("Posted:" + req.body);
         if ((typeof req.body.name === "undefined") ||
             (typeof req.body.minValidResult === "undefined") ||
             (typeof req.body.maxValidResult === "undefined")) {

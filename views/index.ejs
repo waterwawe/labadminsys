@@ -1,10 +1,11 @@
 <%- include('header', {title:"Recent Measurements"}) -%>
     <h2>Measurements</h2>
+    <form method="GET">
     <div class="row mb-2">
         <div class="input-group date col-3" data-provide="datepicker">
             <input type="text" class="form-control" placeholder="From date">
             <div class="input-group-addon">
-                <button><i class="fa fa-calendar" style="font-size:1.9rem" aria-hidden="true"></i></button>
+                <button type="button"><i class="fa fa-calendar" style="font-size:1.9rem" aria-hidden="true"></i></button>
             </div>
         </div>
 
@@ -23,14 +24,17 @@
         <div class="input-group date col-3" data-provide="datepicker">
             <input type="text" class="form-control" placeholder="To date">
             <div class="input-group-addon">
-                <button><i class="fa fa-calendar" style="font-size:1.9rem" aria-hidden="true"></i></button>
+                <button type="button"><i class="fa fa-calendar" style="font-size:1.9rem" aria-hidden="true"></i></button>
             </div>
         </div>
 
         <input type="text" class="form-control col-3" />
     </div>
     <div class="row mb-2 justify-content-between">
-        <button class="ml-3">Search</button>
+        <button type="submit" class="ml-3">Search</button>
+    </div>
+    </form>
+    <div class="row mb-2 justify-content-end">
         <a href="/measurement/add"><button class="mr-3">+</button></a>
     </div>
     <div class="row">
@@ -68,7 +72,7 @@
                             <%= m.result %>
                         </td>
                         <td>
-                            <%= m.productName %>
+                            <%= m._measuredProduct.name %>
                         </td>
                         <td>
                             <%= m.operator %>

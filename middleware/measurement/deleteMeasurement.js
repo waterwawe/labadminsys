@@ -2,7 +2,14 @@
 //Redirects to / after removal
 module.exports = function (objectrepository) {
     return function (req, res, next) {
-        console.log("Requested ID:" + req.params.measurementid);
-        next();
+        if(typeof res.locals.measurement === "undefined"){
+            return next();
+        }
+        res.locals.measurement.remove((err) => {
+            if(err){
+                return next(err);
+            }
+        })
+        return res.redirect("/");
     };
 };

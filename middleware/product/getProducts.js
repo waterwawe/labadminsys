@@ -6,20 +6,37 @@
 const requireOption = require("../requireOption");
 
 module.exports = function (objectrepository) {
-    const ProductModel = requireOption(objectrepository,"ProductModel");
+    const ProductModel = requireOption(objectrepository, "ProductModel");
 
-    //TODO: Make the legit getProducts MW, this doesn't do the paging and query
     return function (req, res, next) {
-        ProductModel.find({}, (err, products) => {
+
+        res.locals.currentPage = parseInt(req.query.page);
+        const pageSize = 10
+
+        if (typeof req.query.page === "undefined")
+            res.locals.currentPage = 1
+
+        const conditions = {}
+
+        if (req.query.productname) {
+            conditions.name = { "$regex": "" + req.query.productname + "", "$options": "i" }
+        }
+
+        ProductModel.count({ ...conditions }, function (err, count) {
             if (err) {
                 return next(err);
             }
+            res.locals.totalPages = count % pageSize == 0 ? count / pageSize : (count / pageSize) + 1;
 
-            res.locals.products = products;
-            console.log(req.query);
-            res.locals.currentPage = 2;
-            res.locals.totalPages = 5;
-            return next();
+            ProductModel.find({ ...conditions }, { name: 1, minValidResult: 1, maxValidResult: 1, _id: 1 }, { skip: (res.locals.currentPage - 1) * pageSize, limit: pageSize }, (err, products) => {
+                if (err) {
+                    return next(err);
+                }
+
+                res.locals.products = products;
+                console.log(req.query);
+                return next();
+            });
         });
     };
 };

@@ -1,12 +1,15 @@
 <%- include('header', {title:"Products"}) -%>
     <h2>Products</h2>
-    <div class="row mb-2">
-
-        <input type="text" class="form-control col-3 ml-3" placeholder="Name" />
-    </div>
-    <div class="row mb-2 justify-content-between">
-        <button class="ml-3">Search</button>
-        <a href="/product/add"><button class="mr-3">+</button></a>
+    <form method="GET">
+        <div class="row mb-2">
+            <input type="text" class="form-control col-3 ml-3" id="productname" name="productname" placeholder="Name" />
+        </div>
+        <div class="row mb-2 justify-content-between">
+            <button type="submit" class="ml-3">Search</button>
+        </div>
+    </form>
+    <div class="row mb-2 justify-content-end">
+    <a href=" /product/add"><button class="mr-3">+</button></a>
     </div>
     <div class="row">
         <div class="col-12">

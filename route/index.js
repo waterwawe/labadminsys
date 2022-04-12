@@ -27,6 +27,7 @@ module.exports = function (app) {
 
     app.post('/measurement/add',
         getAllProducts(objRepo),
+        getMeasurementByIdMw(objRepo),
         upsertMeasurementMw(objRepo),
         renderMw(objRepo, 'addMeasurement'));
     
@@ -40,9 +41,9 @@ module.exports = function (app) {
         renderMw(objRepo, 'editMeasurement'));
 
     app.post('/measurement/:measurementid',
-        upsertMeasurement(objRepo),
         getAllProducts(objRepo),
         getMeasurementByIdMw(objRepo),
+        upsertMeasurement(objRepo),
         renderMw(objRepo, 'editMeasurement'));
 
     app.get('/measurement/:measurementid/delete',
