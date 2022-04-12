@@ -17,17 +17,30 @@ module.exports = function (objectrepository, pageNumber) {
 
         const conditions = {}
 
-        MeasurementModel.find({}, {time:1, sample: 1, result: 1, operator: 1, _id:1, _measuredproduct:1},  {skip: (res.locals.currentPage - 1) * pageSize, limit: pageSize })
-        .populate("_measuredProduct").exec((err, measurements) => {
+        if (req.query.sample) {
+            conditions.sample = { "$regex": "" + req.query.sample + "", "$options": "i" }
+        }
+        if (req.query.operator) {
+            conditions.operator = { "$regex": "" + req.query.operator + "", "$options": "i" }
+        }
+
+        MeasurementModel.count({ ...conditions }, function (err, count) {
             if (err) {
                 return next(err);
             }
 
-            res.locals.measurements = measurements;
-            console.log(req.query);
-            res.locals.currentPage = pageNumber;
-            res.locals.totalPages = 5;
-            return next();
+            res.locals.totalPages = count % pageSize == 0 ? count / pageSize : (count / pageSize) + 1;
+
+            MeasurementModel.find({ conditions }, { time: 1, sample: 1, result: 1, operator: 1, _id: 1, _measuredproduct: 1 }, { skip: (res.locals.currentPage - 1) * pageSize, limit: pageSize })
+                .populate("_measuredProduct").exec((err, measurements) => {
+                    if (err) {
+                        return next(err);
+                    }
+
+                    res.locals.measurements = measurements;
+                    console.log(req.query);
+                    return next();
+                });
         });
     };
 };
