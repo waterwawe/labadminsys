@@ -9,7 +9,16 @@ module.exports = function (objectrepository, pageNumber) {
     const MeasurementModel = requireOption(objectrepository, "MeasurementModel");
 
     return function (req, res, next) {
-        MeasurementModel.find({}, (err, measurements) => {
+        res.locals.currentPage = parseInt(req.query.page);
+        const pageSize = 10
+
+        if (typeof req.query.page === "undefined")
+            res.locals.currentPage = 1
+
+        const conditions = {}
+
+        MeasurementModel.find({}, {time:1, sample: 1, result: 1, operator: 1, _id:1, _measuredproduct:1},  {skip: (res.locals.currentPage - 1) * pageSize, limit: pageSize })
+        .populate("_measuredProduct").exec((err, measurements) => {
             if (err) {
                 return next(err);
             }

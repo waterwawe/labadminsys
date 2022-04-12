@@ -1,38 +1,40 @@
 <%- include('header', {title:"Recent Measurements"}) -%>
     <h2>Measurements</h2>
     <form method="GET">
-    <div class="row mb-2">
-        <div class="input-group date col-3" data-provide="datepicker">
-            <input type="text" class="form-control" placeholder="From date">
-            <div class="input-group-addon">
-                <button type="button"><i class="fa fa-calendar" style="font-size:1.9rem" aria-hidden="true"></i></button>
+        <div class="row mb-2">
+            <div class="input-group date col-3" data-provide="datepicker">
+                <input type="text" class="form-control" id="fromdate" name="fromdate" placeholder="From date">
+                <div class="input-group-addon">
+                    <button type="button"><i class="fa fa-calendar" style="font-size:1.9rem"
+                            aria-hidden="true"></i></button>
+                </div>
             </div>
+
+            <select class="form-control col-3" id="productid" name="productid">
+                <option>Select product</option>
+                <% products.forEach(function(p) { %>
+                    <option>
+                        <%=p.name%>
+                    </option>
+                    <% }) %>
+            </select>
+
+            <input type="text" class="form-control col-3 ml-3" id="sample" name="sample" placeholder="Sample Number" />
         </div>
-
-        <select class="form-control col-3">
-            <option>Select product</option>
-            <% products.forEach(function(p) { %>
-                <option>
-                    <%=p.name%>
-                </option>
-                <% }) %>
-        </select>
-
-        <input type="text" class="form-control col-3 ml-3" placeholder="Sample Number" />
-    </div>
-    <div class="row mb-2">
-        <div class="input-group date col-3" data-provide="datepicker">
-            <input type="text" class="form-control" placeholder="To date">
-            <div class="input-group-addon">
-                <button type="button"><i class="fa fa-calendar" style="font-size:1.9rem" aria-hidden="true"></i></button>
+        <div class="row mb-2">
+            <div class="input-group date col-3" data-provide="datepicker">
+                <input type="text" class="form-control" id="todate" name="todate" placeholder="To date">
+                <div class="input-group-addon">
+                    <button type="button"><i class="fa fa-calendar" style="font-size:1.9rem"
+                            aria-hidden="true"></i></button>
+                </div>
             </div>
-        </div>
 
-        <input type="text" class="form-control col-3" />
-    </div>
-    <div class="row mb-2 justify-content-between">
-        <button type="submit" class="ml-3">Search</button>
-    </div>
+            <input type="text" class="form-control col-3" placeholder="Operator" id="operator" name="operator" />
+        </div>
+        <div class="row mb-2 justify-content-between">
+            <button type="submit" class="ml-3">Search</button>
+        </div>
     </form>
     <div class="row mb-2 justify-content-end">
         <a href="/measurement/add"><button class="mr-3">+</button></a>
@@ -103,4 +105,4 @@
             </ul>
         </nav>
     </div>
-<%- include('footer') -%>
+    <%- include('footer') -%>
