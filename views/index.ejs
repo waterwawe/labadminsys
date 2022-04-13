@@ -11,9 +11,9 @@
             </div>
 
             <select class="form-control col-3" id="productid" name="productid">
-                <option>Select product</option>
+                <option value="-1">Select product</option>
                 <% products.forEach(function(p) { %>
-                    <option>
+                    <option value="<%=p.id%>">
                         <%=p.name%>
                     </option>
                     <% }) %>

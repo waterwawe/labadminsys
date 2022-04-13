@@ -23,6 +23,23 @@ module.exports = function (objectrepository, pageNumber) {
         if (req.query.operator) {
             conditions.operator = { "$regex": "" + req.query.operator + "", "$options": "i" }
         }
+        //TODO: needs fixing
+        if (req.query.productid > 0) {
+            conditions._measuredproduct = { _id: { $eq: req.query.productid } }
+        }
+        if (req.query.fromdate) {
+            if (req.query.todate) {
+                conditions.time = { $gt: req.query.fromdate, $lt: req.query.todate }
+            }
+            else {
+                conditions.time = { $gt: req.query.fromdate }
+            }
+        }
+        else if (req.query.todate) {
+            if (req.query.todate) {
+                conditions.time = { $lt: req.query.todate }
+            }
+        }
 
         MeasurementModel.count({ ...conditions }, function (err, count) {
             if (err) {
@@ -31,7 +48,7 @@ module.exports = function (objectrepository, pageNumber) {
 
             res.locals.totalPages = count % pageSize == 0 ? count / pageSize : (count / pageSize) + 1;
 
-            MeasurementModel.find({ conditions }, { time: 1, sample: 1, result: 1, operator: 1, _id: 1, _measuredproduct: 1 }, { skip: (res.locals.currentPage - 1) * pageSize, limit: pageSize })
+            MeasurementModel.find({ ...conditions }, { time: 1, sample: 1, result: 1, operator: 1, _id: 1, _measuredproduct: 1 }, { skip: (res.locals.currentPage - 1) * pageSize, limit: pageSize })
                 .populate("_measuredProduct").exec((err, measurements) => {
                     if (err) {
                         return next(err);
