@@ -11,7 +11,7 @@
             </div>
 
             <select class="form-control col-3" id="productid" name="productid">
-                <option value="-1">Select product</option>
+                <option value="">Select product</option>
                 <% products.forEach(function(p) { %>
                     <option value="<%=p.id%>">
                         <%=p.name%>
@@ -82,7 +82,7 @@
                         <td>
                             <div class="d-flex justify-content-between">
                                 <a href="/measurement/<%=m.id%>"><button>edit</button></a>
-                                <button>delete</button>
+                                <a href="/measurement/<%=m.id%>/delete"><button>delete</button></a>
                             </div>
                         </td>
                     </tr>
