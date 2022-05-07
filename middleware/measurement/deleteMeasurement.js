@@ -9,7 +9,7 @@ module.exports = function (objectrepository) {
             if(err){
                 return next(err);
             }
+            return res.redirect("/");
         })
-        return res.redirect("/");
     };
 };
